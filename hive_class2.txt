@@ -1,10 +1,47 @@
+
+
+
+
+
+
+
+
+
+### WORKING WITH EXTERNAL TABLES
+
+creating a file
+vi department_data.txt
+
+Copying file to hdfs:
+hdfs dfs -put /tmp/hive_class/department_data.txt /tmp/hive_class;
+
+checking data if available:
+hdfs dfs -ls  /tmp/hive_class/
+
+creating External Table:
+
+create external table dept_details_external
+    > (
+    > dept_id int,
+    > dept_name string,
+    > manager_id int,
+    > salary int
+    > )
+    > row format delimited
+    > fields terminated by ','
+    > location '/tmp/hive_class/';
+
+select * from dept_details_external;
+
+
+
 ### WORKING WITH ARRAY DATA
 
-## Creating a file in Cloudera
+Creating a file in Cloudera:
 
 vi array_data.csv
 
-## create table in Hive
+create table in Hive:
 
 create table employee
     > (
@@ -16,11 +53,11 @@ create table employee
     > fields terminated by ","
     > collection items terminated by ":";
 
-## Load data into table
+Load data into table:
 
 load data local inpath "file:///tmp/big_data/hive/array_data.csv" into table employee;
 
-## Querying a table 
+Querying a table:
 
 select id, name, skills[1] from employee;
 
@@ -37,13 +74,14 @@ select id,
 
 ### WORKING WITH MAP DATA
 
-## creating a file in cloudera
+creating a file in cloudera:
 vi map_data.csv
 
-## Copying file to tmp directory
+Copying file to tmp directory:
 cp data/map_data.csv /tmp/big_data/hive
 
-## creating a table in hive
+Creating a table in hive:
+
 create table employee_map_data
     > (
     > id int,
@@ -56,15 +94,16 @@ create table employee_map_data
     > map keys terminated by ":";
 
 
-### Loading data 
+Loading data:
 
 load data local inpath "file:///tmp/big_data/hive/map_data.csv" into table employee_map_data;
 
-## Quering a table 
+Quering a table:
+
 set hive.cli.print.header = true;
 select * from employee_map_data;
 
-## playing some fun with data
+Playing some fun with data:
 
 select
     > id,
