@@ -1,0 +1,41 @@
+## creating a file in cloudera
+vi map_data.csv
+
+## Copying file to tmp directory
+cp data/map_data.csv /tmp/big_data/hive
+
+## creating a table in hive
+create table employee_map_data
+    > (
+    > id int,
+    > name string,
+    > details map<string,string>
+    > )
+    > row format delimited
+    > fields terminated by ","
+    > collection items terminated by "|"
+    > map keys terminated by ":";
+
+
+### Loading data 
+
+load data local inpath "file:///tmp/big_data/hive/map_data.csv" into table employee_map_data;
+
+## Quering a table 
+set hive.cli.print.header = true;
+select * from employee_map_data;
+
+## playing some fun with data
+
+select
+    > id,
+    > name,
+    > details,
+    > size(details),
+    > map_keys(details) as map_keys_distinct,
+    > map_values(details) as map_values_distinct
+    > from employee_map_data;
+
+
+
+
