@@ -1,3 +1,42 @@
+### WORKING WITH ARRAY DATA
+
+## Creating a file in Cloudera
+
+vi array_data.csv
+
+## create table in Hive
+
+create table employee
+    > (
+    > id int,
+    > name string,
+    > skills array<string>
+    > )
+    > row format delimited
+    > fields terminated by ","
+    > collection items terminated by ":";
+
+## Load data into table
+
+load data local inpath "file:///tmp/big_data/hive/array_data.csv" into table employee;
+
+## Querying a table 
+
+select id, name, skills[1] from employee;
+
+select id, name, size(skills) from employee;
+
+select id,
+    > name,
+    > array_contains(skills, "hadoop") as knows_hadoop,
+    > sort_array(skills)
+    > from employee;
+
+
+
+
+### WORKING WITH MAP DATA
+
 ## creating a file in cloudera
 vi map_data.csv
 
