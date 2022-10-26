@@ -1,1 +1,26 @@
 
+ vim csv_file.csv
+
+cp data/csv_file.csv /tmp/big_data/hive
+
+create table csv_table
+    > (
+    > name string,
+    > location string
+    > )
+    > row format serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+    > with serdeproperties (
+    > "separatorChar" = ",",
+    > "quoteChar" = "\"",
+    > "escapeChar" = "\\"
+    > )
+    > stored as textfile;
+
+
+load data local inpath "file:///tmp/big_data/hive/csv_file.csv" into table csv_table;
+
+select * from csv_table;
+
+describe formatted csv_table;
+
+
