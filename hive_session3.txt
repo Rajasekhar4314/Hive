@@ -1,0 +1,1 @@
+from department_data insert overwrite table department_data_pq select *;
