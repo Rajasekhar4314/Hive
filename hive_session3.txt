@@ -1,1 +1,68 @@
+# create a table which will store data in csv/txt file
+
+create table department_data                                                                                                      
+    > (                                                                                                                                       
+    > dept_id int,                                                                                                                    
+    > dept_name string,
+    > mnger_id int,
+    > salary int
+    > )                                                                                                                                       
+    > row format delimited
+    > fields terminated by ',';
+
+# Loading data
+load data local inpath "file:///tmp/big_data/hive/department_data.txt" into table department_data
+
+# command to create identical table
+create table department_data_bkup as select * from department_data;
+
+# describe command for a table
+describe extended department_data_bkup;
+
+
+# create a table which will store data in parquet
+
+create table department_data_pq                                                                                                        
+    > (                                                                                                                                       
+    > dept_id int,                                                                                                                    
+    > dept_name string,
+    > mnger_id int,
+    > salary int
+    > )                                                                                                                                       
+    > stored as parquet;
+
+
+# Loading data from another table
 from department_data insert overwrite table department_data_pq select *;
+
+# Querying a table (gives all values)
+
+select * from department_data_pq
+
+# To see hive tables that were stored in hdfs warehouse
+hdfs dfs -ls /user/hive/warehouse/hive_class2.db
+
+# To see content in the normal table
+hdfs dfs -cat /user/hive/warehouse/hive_class2.db/department_data/department_data.txt
+
+# To see content in the parquet table (Throws an error)
+hdfs dfs -cat /user/hive/warehouse/hive_class2.db/department_data_pq/000000_0
+
+
+# create a table which will store data in parquet
+
+create table department_data_orc                                                                                                        
+    > (                                                                                                                                       
+    > dept_id int,                                                                                                                    
+    > dept_name string,
+    > mnger_id int,
+    > salary int
+    > )                                                                                                                                       
+    > stored as orc;
+
+# Loading data from another table
+from department_data insert overwrite table department_data_orc select *;
+
+
+
+
