@@ -1,3 +1,4 @@
+##  creating CSV file SERDE  format
 
  vim csv_file.csv
 
@@ -22,5 +23,121 @@ load data local inpath "file:///tmp/big_data/hive/csv_file.csv" into table csv_t
 select * from csv_table;
 
 describe formatted csv_table;
+
+## create JSON file SERDE table
+
+
+
+### create csv table for sales order data
+
+create table sales_order_data_csv
+(
+ORDERNUMBER int,
+QUANTITYORDERED int,
+PRICEEACH float,
+ORDERLINENUMBER int,
+SALES float,
+STATUS string,
+QTR_ID int,
+MONTH_ID int,
+YEAR_ID int,
+PRODUCTLINE string,
+MSRP int,
+PRODUCTCODE string,
+PHONE string,
+CITY string,
+STATE string,
+POSTALCODE string,
+COUNTRY string,
+TERRITORY string,
+CONTACTLASTNAME string,
+CONTACTFIRSTNAME string,
+DEALSIZE string
+)
+row format delimited
+fields terminated by ','
+tblproperties("skip.header.line.count"="1")
+; 
+
+# load data into table
+
+load data local inpath "file:///tmp/big_data/hive/sales_order_data.csv" into table sales_order_data_csv;
+
+select * from sales_order_data_csv;
+
+## Creating ORC table
+
+create table sales_order_data_orc
+(
+ORDERNUMBER int,
+QUANTITYORDERED int,
+PRICEEACH float,
+ORDERLINENUMBER int,
+SALES float,
+STATUS string,
+QTR_ID int,
+MONTH_ID int,
+YEAR_ID int,
+PRODUCTLINE string,
+MSRP int,
+PRODUCTCODE string,
+PHONE string,
+CITY string,
+STATE string,
+POSTALCODE string,
+COUNTRY string,
+TERRITORY string,
+CONTACTLASTNAME string,
+CONTACTFIRSTNAME string,
+DEALSIZE string
+)
+stored as orc;
+
+# Loading data from other table
+
+from sales_order_data_csv insert overwrite table sales_order_data_orc select *;
+
+select year_id, sum(sales) as total_sales from sales_order_data_orc group by year_id;
+
+## Checking no of reducers present in the table
+
+# here only 1 map and 1 reduce task will get created
+
+In order to change the average load for a reducer (in bytes):                                                                                 
+  set hive.exec.reducers.bytes.per.reducer=<number>                                                                                           
+In order to limit the maximum number of reducers:                                                                                             
+  set hive.exec.reducers.max=<number>                                                                                                         
+In order to set a constant number of reducers:                                                                                                
+  set mapreduce.job.reduces=<number>
+
+set mapreduce.job.reduces=3;
+
+# create table orc_v1(ex)
+create table sales_order_data_orc_v1 stored as orc as select year_id, sum(sales) as total_sales from sales_order_data_orc group by year_id;
+
+# 3 reducers presented in this table
+hdfs dfs -ls /user/hive/warehouse/hive_class2.db/sales_order_data_orc_v1
+
+
+set mapreduce.job.reduces=2;
+
+create table sales_order_data_orc_v2 stored as orc as select year_id, sum(sales) as total_sales from sales_order_data_orc group by year_id;
+
+# 2 reducers presented in this table
+hdfs dfs -ls /user/hive/warehouse/hive_class2.db/sales_order_data_orc_v2
+
+## Difference bwn order by and sort by
+set mapreduce.job.reduces=5;
+
+# order by works on global (fixed) =1
+select year_id from sales_order_data_orc order by year_id;
+
+# order by works on local based on reducers =5
+select year_id from sales_order_data_orc sort by year_id;
+
+
+
+
+
 
 
