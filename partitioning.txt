@@ -45,6 +45,10 @@ der_data_csv;
 # check how data looks like
 hdfs dfs -ls /user/hive/warehouse/hive_class2.db/sales_order_static_part
 
+select year_id, sum(sales) as total_sales from sales_order_dynamic_part where country = 'usa' group by year_id;
+
+select sum(sales) as total_sales from sales_order_dynamic_part where country = 'usa';
+
 
 # multilevel partition
 
@@ -64,4 +68,4 @@ der_data_csv;
 # check how data looks like
 hdfs dfs -ls /user/hive/warehouse/hive_class2.db/sales_order_static_part
 
-
+select sum(sales) as total_sales from sales_order_dynamic_multi_part where country = 'usa' and year_id = 2004;
