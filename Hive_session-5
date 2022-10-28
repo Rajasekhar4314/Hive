@@ -1,0 +1,20 @@
+# Create multiply udf file
+vim multiply_udf.py
+
+## Add py file into hive
+add file /tmp/big_data/hive/multiply_udf.py
+
+# querying 
+select transform (quantityordered) using 'python multiply_udf.py' as (quantity int) from sales_order_data_orc limit 5;
+
+
+# Create multiply udf file
+vim many_column_udf.py
+
+## Add py file into hive
+add file /tmp/big_data/hive/many_column_udf.py
+
+# querying 
+select transform (country, quantityordered) using 'many_column_udf.py' as (country string, quantity int) from sales_order_data_orc limit 5;
+
+
