@@ -102,6 +102,8 @@ SET hive.auto.convert.join=true;
 
 SELECT * FROM buck_users u INNER JOIN buck_locations l ON u.id = l.id;
 
+Hadoop job information for Stage-3: number of mappers: 1; number of reducers: 0
+
 ------------------------------------------------------------------------------------------------------------------------------
 Sorted Merge Bucket Map Join
 ------------------------------------------------------------------------------------------------------------------------------
