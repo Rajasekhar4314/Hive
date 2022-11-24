@@ -62,7 +62,7 @@ load data inpath "file:///tmp/hive_data_hdfs" into table country_wise_hdfs;
 ## EXTERNAL TABLES
 
 # Create a External table
-create external table country_wise_external
+create external table country_wise_external2
 (
 Country string,
 Confirmed int,
