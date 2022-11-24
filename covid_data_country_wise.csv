@@ -86,4 +86,12 @@ location "/tmp/hive_data_hdfs/"; ## Hdfs location
 
 select * from country_wise_external
 
+select count(country),who_region from country_wise_external group by who_region;
+select sum(new_cases),who_region from country_wise_external group by who_region;
+select country, recovered from country_wise_external;
+select country, confirmed-recovered-active as total_deaths from country_wise_external;
+select country, deaths/recovered*100 as death_rate from country_wise_external;
+select country, recovered/confirmed*100 as recovery_rate from country_wise_external;
+
+
 
