@@ -1,0 +1,28 @@
+
+## Create Internal table
+create table country_wise_local
+    > (
+    > Country string,
+    > Confirmed int,
+    > Deaths int,
+    > Recovered int,
+    > Active int,
+    > New_cases int,
+    > New_deaths int,
+    > New_recovered int,
+    > Deaths_per_100Cases float,
+    > Recovered_per_100Cases float,
+    > Deaths_per_100Recovered float,
+    > Confirmed_last_week int,
+    > 1week_change int,
+    > 1week_percent_increase float,
+    > WHO_Region string
+    > )
+    > row format delimited
+    > fields terminated by ",";
+
+## Load data from local
+
+load data local inpath "file:///tmp/hive_data/country_wise_latest.csv" into table country_wise_local;
+
+
