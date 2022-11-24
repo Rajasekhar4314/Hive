@@ -1,3 +1,6 @@
+# Download country_wise_latest.csv and do analysis on it.
+https://www.kaggle.com/datasets/imdevskp/corona-virus-report?resource=download
+
 ##LOADING DATA FROM LOCAL TO HIVE TABLE
 
 # Create Internal table
