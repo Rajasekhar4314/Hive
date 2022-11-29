@@ -4,7 +4,7 @@ https://www.kaggle.com/datasets/imdevskp/corona-virus-report?resource=download
 ##LOADING DATA FROM LOCAL TO HIVE TABLE
 
 # Create Internal table
-create table country_wise_local
+create table covid_data_country_wise_local
 (
 Country string,
 Confirmed int,
@@ -27,7 +27,7 @@ fields terminated by ",";
 
 # Load data from local
 
-load data local inpath "file:///tmp/hive_data/country_wise_latest.csv" into table country_wise_local;
+load data local inpath "file:///tmp/hive_data/country_wise_latest.csv" into table covid_data_country_wise_local;
 
 ##LOADING DATA FROM HDFS TO HIVE TABLE
 
@@ -37,7 +37,7 @@ hdfs dfs -mkdir /tmp/hive_data_hdfs
 hdfs dfs -put /tmp/hive_data/country_wise_latest.csv /tmp/hive_data_hdfs
 
 # Create a table
-create table country_wise_hdfs
+create table covid_data_country_wise_hdfs
 (
 Country string,
 Confirmed int,
@@ -60,12 +60,12 @@ fields terminated by ",";
 
 # Load data from hdfs
 
-load data inpath "file:///tmp/hive_data_hdfs" into table country_wise_hdfs;
+load data inpath "file:///tmp/hive_data_hdfs" into table covid_data_country_wise_hdfs;
 
 ## EXTERNAL TABLES
 
 # Create a External table
-create external table country_wise_external2
+create external table covid_data_country_wise_external
 (
 Country string,
 Confirmed int,
@@ -87,14 +87,14 @@ row format delimited
 fields terminated by ","
 location "/tmp/hive_data_hdfs/"; ## Hdfs location
 
-select * from country_wise_external
+select * from covid_data_country_wise_external
 
-select count(country),who_region from country_wise_external group by who_region;
-select sum(new_cases),who_region from country_wise_external group by who_region;
-select country, recovered from country_wise_external;
-select country, confirmed-recovered-active as total_deaths from country_wise_external;
-select country, deaths/recovered*100 as death_rate from country_wise_external;
-select country, recovered/confirmed*100 as recovery_rate from country_wise_external;
+select count(country),who_region from covid_data_country_wise_external group by who_region;
+select sum(new_cases),who_region from covid_data_country_wise_external group by who_region;
+select country, recovered from covid_data_country_wise_external;
+select country, confirmed-recovered-active as total_deaths from covid_data_country_wise_external;
+select country, deaths/recovered*100 as death_rate from covid_data_country_wise_external;
+select country, recovered/confirmed*100 as recovery_rate from covid_data_country_wise_external;
 
 
 
