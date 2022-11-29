@@ -105,5 +105,6 @@ select country, sum(sales) as max_sales from sales_order_orc2 group by country o
 select country, sum(sales) as min_sales from sales_order_orc2 group by country order by min_sales asc limit 1;
 ##Q6
 
-
+## Q7
+select month_id, sum(QUANTITY_ORDERED) as max_ordered from sales_order_orc2 group by month_id;
 
