@@ -1,0 +1,71 @@
+
+create table sales_order_csv
+(
+ORDER_NUMBER int,
+QUANTITY_ORDERED int,
+PRICE_EACH float,
+ORDERLINE_NUMBER int,
+SALES float,
+STATUS string,
+QTR_ID int,
+MONTH_ID int,
+YEAR_ID int,
+PRODUCT_LINE string,
+MSRP int,
+PRODUCT_CODE string,
+PHONE bigint,
+CITY string,
+STATE string,
+POSTALCODE string,
+COUNTRY string,
+TERRITORY string,
+CONTACT_LASTNAME string,
+CONTACT_FIRSTNAME string,
+DEALSIZE string
+)
+row format delimited
+fields terminated by ","
+tblproperties ("skip.header.line.count"="1")
+
+## Loading data from HDFS to Hive Table
+load data inpath "/tmp/hive_data/sales_order_data.csv" into table sales_order_csv; 
+
+## Creating Backup table of sales_order_csv to sales_order_orc
+create table sales_order_orc stored as orc as select * from sales_order_csv;
+
+## creating orc table
+
+create table sales_order_orc2
+(
+ORDER_NUMBER int,
+QUANTITY_ORDERED int,
+PRICE_EACH float,
+ORDERLINE_NUMBER int,
+SALES float,
+STATUS string,
+QTR_ID int,
+MONTH_ID int,
+YEAR_ID int,
+PRODUCT_LINE string,
+MSRP int,
+PRODUCT_CODE string,
+PHONE bigint,
+CITY string,
+STATE string,
+POSTALCODE string,
+COUNTRY string,
+TERRITORY string,
+CONTACT_LASTNAME string,
+CONTACT_FIRSTNAME string,
+DEALSIZE string
+)
+stored as orc
+tblproperties ("skip.header.line.count"="1")
+
+## loading data from sales_order_csv to sales_order_orc2
+from sales_order_csv insert overwrite table sales_order_orc2 select *;
+
+##
+describe formatted sales_order_orc2;
+describe formatted sales_order_orc;
+
