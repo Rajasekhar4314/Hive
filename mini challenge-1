@@ -1,4 +1,30 @@
 
+This is a real time dataset of the ineuron technical consultant team. You have to perform hive analysis on this given dataset.
+
+Download Dataset 1 - https://drive.google.com/file/d/1WrG-9qv6atP-W3P_-gYln1hHyFKRKMHP/view
+
+Download Dataset 2 - https://drive.google.com/file/d/1-JIPCZ34dyN6k9CqJa-Y8yxIGq6vTVXU/view
+
+Note: both files are csv files. 
+
+
+1. Create a schema based on the given dataset
+2. Dump the data inside the hdfs in the given schema location.
+3. List of all agents' names. 
+4. Find out agent average rating.
+5. Total working days for each agents 
+6. Total query that each agent have taken 
+7. Total Feedback that each agent have received 
+8. Agent name who have average rating between 3.5 to 4 
+9. Agent name who have rating less than 3.5 
+10. Agent name who have rating more than 4.5 
+11. How many feedback agents have received more than 4.5 average
+12. average weekly response time for each agent 
+13. average weekly resolution time for each agents 
+14. Find the number of chat on which they have received a feedback 
+15. Total contribution hour for each and every agents weekly basis 
+16. Perform inner join, left join and right join based on the agent column and after joining the table export that data into your local system.
+17. Perform partitioning on top of the agent column and then on top of that perform bucketing for each partitioning.
 
 create table agent_logging_data
 (
@@ -32,8 +58,39 @@ tblproperties ("skip.header.line.count"= "1")
 
 ## 2. Loading data into Hive from HDFS
 load data inpath "/tmp/hive_data/agent_logging.csv" into table agent_logging_data;
+load data inpath "/tmp/hive_data/agent_performance.csv" into table agent_performance_data;
 
 ## Q3.
 select agent_name from agent_logging_data
+
 ## Q4.
+select agent_name, avg(average_rating)as total_rating from agent_performance_data group by agent_name;
+## Q5.
+select agent_name,count(log_date) as working_days from agent_performance_data group by agent_name;
+## Q6
+select agent_name,count(total_chats) as total_queries from agent_performance_data group by agent_name;
+
+## Q7.
+ select agent_name,sum(total_feedback) as feedback_per_agent from agent_performance_data group by agent_name;
+## Q8
+select agent_name, average_rating from agent_performance_data where average_rating > 3.5 and average_rating<4;
+## Q9
+select agent_name, average_rating from agent_performance_data where average_rating < 3.5;
+## Q10
+select agent_name, average_rating from agent_performance_data where average_rating > 4.5;
+
+## Q11
+ select count(agent_name) as total_agents from agent_performance_data where total_feedback >4.5;
+
+## Q14
+select count(total_chats) as no_of_chats from agent_performance_data where total_feedback != null;
+
+## Q16
+select * from agent_logging_data as al 
+inner join agent_performance_data as ap on ap.agent_name = al.agent_name
+union all
+select * from agent_logging_data as al 
+left join agent_performance_data as ap on ap.agent_name = al.agent_name
+union all
+right join agent_performance_data as ap on ap.agent_name = al.agent_name
 
