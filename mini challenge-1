@@ -16,17 +16,24 @@ tblproperties ("skip.header.line.count"= "1")
 create table agent_performance_data
 (
 sl_no int,
-date date,
+log_date date,
 agent_name string,
-Total Chats int,
+Total_Chats int,
 Average_Response_Time string,
 Average_Resolution_Time string,
 Average_Rating float,
-Total Feedback int
+Total_Feedback int
 )
 row format delimited 
-fields terminated by 
+fields terminated by ","
+tblproperties ("skip.header.line.count"= "1")
 
 
-## Loading data into Hive from HDFS
+
+## 2. Loading data into Hive from HDFS
 load data inpath "/tmp/hive_data/agent_logging.csv" into table agent_logging_data;
+
+## Q3.
+select agent_name from agent_logging_data
+## Q4.
+
